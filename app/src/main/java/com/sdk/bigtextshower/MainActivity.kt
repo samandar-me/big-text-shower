@@ -1,4 +1,4 @@
-package com.example.bigtextshower
+package com.sdk.bigtextshower
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

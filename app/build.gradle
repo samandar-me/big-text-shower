@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.bigtextshower'
+    namespace 'com.sdk.bigtextshower'
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.example.bigtextshower"
+        applicationId "com.sdk.bigtextshower"
         minSdk 21
         targetSdk 32
         versionCode 1

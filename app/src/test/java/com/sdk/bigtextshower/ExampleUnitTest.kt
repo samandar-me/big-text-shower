@@ -1,4 +1,4 @@
-package com.example.bigtextshower
+package com.sdk.bigtextshower
 
 import org.junit.Test
 
