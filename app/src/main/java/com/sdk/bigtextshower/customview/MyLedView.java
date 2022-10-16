@@ -33,12 +33,12 @@ public class MyLedView extends SurfaceView implements SurfaceHolder.Callback, Ru
     private boolean isDrawBg = false;
     private Handler handler;
 
-    private String txt = "MyText";
+    private String txt = "Hello ❤️";
     private float textSize = 220f;
     private String backgroundColor = "#FF000000";
     private int font = R.font.baloo;
     private String textColor = "#E91E63";
-    private int textSpeed = 10;
+    private int textSpeed = 200;
 
     public MyLedView(Context context) {
         super(context);
@@ -83,14 +83,24 @@ public class MyLedView extends SurfaceView implements SurfaceHolder.Callback, Ru
 
     public void run() {
         while (loop) {
-            draw();
+            synchronized (surfaceHolder) {
+                draw();
+            }
+            try{
+                Thread.sleep(10);
+            }catch(InterruptedException ex){
+                Log.e("TextSurfaceView",ex.getMessage()+"\n"+ex);
+            }
         }
     }
+
+
 
     private Bitmap drawText() {
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(Color.parseColor(textColor));
         paint.setTextSize(textSize);
+        paint.setTextAlign(Paint.Align.CENTER);
         paint.setShadowLayer(8, 0, 0, Color.rgb(255, 255, 0));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             paint.setTypeface(getContext().getResources().getFont(font));
@@ -101,8 +111,9 @@ public class MyLedView extends SurfaceView implements SurfaceHolder.Callback, Ru
         float scale = (screenHeight - 100) / height;
         Bitmap bitmap = Bitmap.createBitmap((int) Math.floor(width), (int) Math.floor(height), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
-        canvas.drawText(txt, 0, getPivotY() / 2 -20f, paint);
-
+        int xPos = (canvas.getWidth() / 2);
+        int yPos = (int) ((canvas.getHeight() / 2) - ((paint.descent() + paint.ascent()) / 2)) ;
+        canvas.drawText(txt, xPos, yPos, paint);
         Matrix matrix = new Matrix();
         matrix.postScale(scale, scale);
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
@@ -120,11 +131,10 @@ public class MyLedView extends SurfaceView implements SurfaceHolder.Callback, Ru
         canvas.drawBitmap(txt, x, 50, mPaint);
         canvas.saveLayer(0, 0, width, height, null, Canvas.ALL_SAVE_FLAG);
 
-
         mPaint.setARGB(255, 255, 255, 255);
 
-        int lines = (int) Math.floor(width / 10);
-        int column = (int) Math.floor(width / 10);
+        int lines = (int) Math.floor(width / 10f);
+        int column = (int) Math.floor(width / 10f);
         for (int i = 0; i < lines; i++) {
             int y = i == 0 ? 4 : 4 + i * 10;
             canvas.drawCircle(4, y, 4, mPaint);

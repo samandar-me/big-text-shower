@@ -3,12 +3,31 @@ package com.sdk.bigtextshower.activity
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
+import android.view.View
+import android.view.Window
 import android.view.WindowManager
+import android.widget.HorizontalScrollView
+import androidx.activity.viewModels
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.sdk.bigtextshower.R
 import com.sdk.bigtextshower.customview.MyLedView
+import com.sdk.bigtextshower.customview.TextLedView
+import com.sdk.bigtextshower.viewmodel.MainViewModel
+import com.sdk.bigtextshower.viewmodel.State
+import kotlinx.coroutines.Runnable
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.launch
 
 class TextShowActivity : AppCompatActivity() {
+    private val viewModel: MainViewModel by viewModels()
+    private lateinit var myLedView: MyLedView
+    var scrollX = 0
+    var direction = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -16,28 +35,29 @@ class TextShowActivity : AppCompatActivity() {
         lp.screenBrightness = 200f
         window.attributes = lp
 
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
         window.setFlags(
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
         )
+        setContentView(R.layout.activity_text_show)
 
-        val constraintLayout = ConstraintLayout(this)
-        val layoutParams = ConstraintLayout.LayoutParams(
-            ConstraintLayout.LayoutParams.MATCH_PARENT,
-            ConstraintLayout.LayoutParams.MATCH_PARENT
-        )
-        constraintLayout.layoutParams = layoutParams
-        val myLedView = MyLedView(this)
-        myLedView.apply {
-            setText("textView")
-            setTextSize(221f)
-            setBackgroundColor("#03203C")
-            setTextSpeed(100)
-            setTextColor("#E91E63")
-            setFont(R.font.baloo)
-        }
-        constraintLayout.addView(myLedView)
+        val scrollView: HorizontalScrollView = findViewById(R.id.horizontalSc)
+        val textLedView: TextLedView = findViewById(R.id.ledView)
+        val handler = Handler(mainLooper)
+        textLedView.ledText = "         Hello❤️ "
+        textLedView.ledType = "1"
+        textLedView.ledColor = getColor(R.color.red)
 
-        setContentView(constraintLayout, layoutParams)
+        handler.post(object : Runnable {
+            override fun run() {
+                scrollView.scrollTo(scrollX, 0)
+                scrollX += (textLedView.ledRadius + textLedView.ledSpace) * direction
+                if (scrollX <= 0 || scrollX >= textLedView.width - scrollView.width) {
+                    scrollX = 0
+                }
+                handler.postDelayed(this, 10)
+            }
+        })
     }
 }
