@@ -2,6 +2,8 @@ package com.sdk.bigtextshower.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
@@ -17,20 +19,15 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-//
-//        viewModel.apply {
-//            setText("Test")
-//            setFont(R.font.baloo)
-//            setBackgroundColor("#242B2E")
-//            setTextSize(220f)
-//            setTextSpeed(60)
-//            setTextColor("#E91E63")
-//        }
-        binding.btn.setOnClickListener {
-            val bundle = bundleOf("state" to State())
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            val state =
+                State("Preview", 200, R.color.red, 200, R.color.black_light, R.font.baloo, "1")
+            val bundle = bundleOf("state" to state)
             val intent = Intent(this, TextShowActivity::class.java)
             intent.putExtras(bundle)
             startActivity(intent)
-        }
+        }, 3000)
+
     }
 }

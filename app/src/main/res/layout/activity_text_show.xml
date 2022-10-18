@@ -2,11 +2,13 @@
 <HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/horizontalSc"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
+    android:keepScreenOn="true"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     android:scrollbars="none"
-    tools:context=".activity.TextShowActivity">
+    tools:context="com.sdk.bigtextshower.activity.TextShowActivity">
 
     <FrameLayout
         android:layout_width="wrap_content"
@@ -14,12 +16,12 @@
 
         <com.sdk.bigtextshower.customview.TextLedView
             android:id="@+id/ledView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            app:led_color="#3effe8"
-            app:text="          Hello❤️ "
-            app:text_size="400sp" />
+            app:text="TextView"
+            app:text_size="300sp"
+            app:led_color="@color/red"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
     </FrameLayout>
 
 </HorizontalScrollView>

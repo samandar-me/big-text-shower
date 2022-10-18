@@ -28,90 +28,36 @@ import java.util.List;
 
 public class TextLedView extends View {
     private static final int TEXTURE_MAX = 2 * 1024;
-    /**
-     * Led light show shape
-     * 1.circle shape
-     * 2.square shape
-     * 3.custom shape
-     */
     public static final String LED_TYPE_CIRCLE = "1";
     public static final String LED_TYPE_SQUARE = "2";
     public static final String LED_TYPE_DRAWABLE = "3";
-
-    /**
-     * Content type,text or image
-     */
     public static final String CONTENT_TYPE_TEXT = "1";
     public static final String CONTENT_TYPE_IMAGE = "2";
 
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-
-
-    /**
-     * Led light space
-     */
     private int ledSpace;
-
-    /**
-     * Led light radius
-     */
+    private int font = R.font.baloo;
     private int ledRadius;
-    /**
-     * Led color, if content is image,this param not work
-     */
     private int ledColor;
-
-    /**
-     * Content text size
-     */
     private int ledTextSize;
 
-    /**
-     * Content type, text or image
-     */
     private String ledType;
-
-    /**
-     * Custom led light drawable
-     */
     private Drawable customLedLightDrawable;
-
-    /**
-     * Store the points of all px
-     */
     private List<Point> circlePoint = new ArrayList<>();
-
-    /**
-     * Content of text
-     */
     private CharSequence ledText;
-
-
-    /**
-     * Content of image
-     */
     private Drawable ledImage;
-
-    /**
-     * The content width and height
-     */
     private int mDrawableWidth;
     private int mDrawableHeight;
 
     private int mMaxWidth = Integer.MAX_VALUE;
     private int mMaxHeight = Integer.MAX_VALUE;
     private boolean sCompatAdjustViewBounds;
-
-    /**
-     * Padding have not added , so not working
-     */
     private int mPaddingLeft = 0;
     private int mPaddingRight = 0;
     private int mPaddingTop = 0;
     private int mPaddingBottom = 0;
 
     private String contentType = CONTENT_TYPE_TEXT;
-
 
     public TextLedView(@NonNull Context context) {
         super(context);
@@ -127,11 +73,6 @@ public class TextLedView extends View {
         super(context, attrs, defStyleAttr);
         init(attrs);
     }
-
-    /**
-     * Read the xml config and init
-     * @param attrs the xml config
-     */
     private void init(AttributeSet attrs) {
         final int targetSdkVersion = getContext().getApplicationInfo().targetSdkVersion;
         sCompatAdjustViewBounds = targetSdkVersion <= Build.VERSION_CODES.JELLY_BEAN_MR1;
@@ -170,6 +111,9 @@ public class TextLedView extends View {
         }
         ledText = attributes.getText(R.styleable.TextLedView_text);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            paint.setTypeface(getContext().getResources().getFont(font));
+        }
         paint.setColor(ledColor);
         paint.setTextSize(ledTextSize);
 
@@ -182,15 +126,8 @@ public class TextLedView extends View {
         }
     }
 
-    /**
-     * Resize the view if need
-     * @param widthMeasureSpec
-     * @param heightMeasureSpec
-     */
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        // Text type not need resize
         if(contentType.equals(CONTENT_TYPE_TEXT)){
             setMeasuredDimension(mDrawableWidth,mDrawableHeight);
             return;
@@ -202,13 +139,8 @@ public class TextLedView extends View {
         final int pright = mPaddingRight;
         final int ptop = mPaddingTop;
         final int pbottom = mPaddingBottom;
-        // Desired aspect ratio of the view's contents (not including padding)
         float desiredAspect = 0.0f;
-
-        // We are allowed to change the view's mWidth
         boolean resizeWidth = false;
-
-        // We are allowed to change the view's mHeight
         boolean resizeHeight = false;
 
 
@@ -220,9 +152,6 @@ public class TextLedView extends View {
         h = mDrawableHeight;
         if (w <= 0) w = 1;
         if (h <= 0) h = 1;
-
-        // We are supposed to adjust view bounds to match the aspect
-        // ratio of our drawable. See if that is possible.
         resizeWidth = widthSpecMode != MeasureSpec.EXACTLY;
         resizeHeight = heightSpecMode != MeasureSpec.EXACTLY;
 
@@ -231,27 +160,16 @@ public class TextLedView extends View {
         int widthSize;
         int heightSize;
 
-
         if (resizeWidth || resizeHeight) {
-
-            // Get the max possible mWidth given our constraints
             widthSize = resolveAdjustedSize(w + pleft + pright, mMaxWidth, widthMeasureSpec);
-
-            // Get the max possible mHeight given our constraints
             heightSize = resolveAdjustedSize(h + ptop + pbottom, mMaxHeight, heightMeasureSpec);
-
-            // See what our actual aspect ratio is
             final float actualAspect = (float) (widthSize - pleft - pright) /
                     (heightSize - ptop - pbottom);
             if (Math.abs(actualAspect - desiredAspect) > 0.0000001) {
                 boolean done = false;
-
-                // Try adjusting mWidth to be proportional to mHeight
                 if (resizeWidth) {
                     int newWidth = (int) (desiredAspect * (heightSize - ptop - pbottom)) +
                             pleft + pright;
-
-                    // Allow the mWidth to outgrow its original estimate if mHeight is fixed.
                     if (!resizeHeight && !sCompatAdjustViewBounds) {
                         widthSize = resolveAdjustedSize(newWidth, mMaxWidth, widthMeasureSpec);
                     }
@@ -261,13 +179,9 @@ public class TextLedView extends View {
                         done = true;
                     }
                 }
-
-                // Try adjusting mHeight to be proportional to mWidth
                 if (!done && resizeHeight) {
                     int newHeight = (int) ((widthSize - pleft - pright) / desiredAspect) +
                             ptop + pbottom;
-
-                    // Allow the mHeight to outgrow its original estimate if mWidth is fixed.
                     if (!resizeWidth && !sCompatAdjustViewBounds) {
                         heightSize = resolveAdjustedSize(newHeight, mMaxHeight,
                                 heightMeasureSpec);
@@ -279,10 +193,6 @@ public class TextLedView extends View {
                 }
             }
         } else {
-            /* We are either don't want to preserve the drawables aspect ratio,
-               or we are not allowed to change view dimensions. Just measure in
-               the normal way.
-            */
             w += pleft + pright;
             h += ptop + pbottom;
 
@@ -302,19 +212,12 @@ public class TextLedView extends View {
         final int specSize = MeasureSpec.getSize(measureSpec);
         switch (specMode) {
             case MeasureSpec.UNSPECIFIED:
-                /* Parent says we can be as big as we want. Just don't be larger
-                   than max size imposed on ourselves.
-                */
                 result = Math.min(desiredSize, maxSize);
                 break;
             case MeasureSpec.AT_MOST:
-                // Parent says we can be as big as we want, up to specSize.
-                // Don't be larger than specSize, and don't be larger than
-                // the max size imposed on ourselves.
                 result = Math.min(Math.min(desiredSize, specSize), maxSize);
                 break;
             case MeasureSpec.EXACTLY:
-                // No choice. Do what we are told.
                 result = specSize;
                 break;
         }
@@ -325,7 +228,7 @@ public class TextLedView extends View {
     protected void onDraw(Canvas canvas) {
         Bitmap bitmap = null;
         if (contentType.equals(CONTENT_TYPE_TEXT)) {
-            bitmap = generateDrawable(drawText(ledText, paint));
+            bitmap = generateDrawable(renderText(ledText, paint));
         } else if (contentType.equals(CONTENT_TYPE_IMAGE)) {
             bitmap = generateDrawable(renderDrawable(ledImage, getWidth(), getHeight()));
         }
@@ -348,16 +251,6 @@ public class TextLedView extends View {
         }
     }
 
-
-    @Deprecated
-    private void setLEDView(View view) {
-
-    }
-
-    /**
-     * Set text content
-     * @param text content
-     */
     public void setText(CharSequence text) {
         this.contentType = CONTENT_TYPE_TEXT;
         this.ledText = text;
@@ -366,11 +259,6 @@ public class TextLedView extends View {
         invalidate();
     }
 
-
-    /**
-     * Set drawable content
-     * @param drawable drawable
-     */
     public void setDrawable(Drawable drawable) {
         this.contentType = CONTENT_TYPE_IMAGE;
         this.ledImage = drawable;
@@ -389,10 +277,6 @@ public class TextLedView extends View {
         return null;
     }
 
-    /**
-     * measure the text width and height
-     * @param text text content
-     */
     private void measureTextBound(String text) {
         Paint.FontMetrics m = paint.getFontMetrics();
         mDrawableWidth = (int) paint.measureText(text);
@@ -416,19 +300,12 @@ public class TextLedView extends View {
         Canvas canvas = new Canvas(bitmap);
         int xPos = (canvas.getWidth() / 2);
         int yPos = (int) ((canvas.getHeight() / 2) - ((paint.descent() + paint.ascent()) / 2)) ;
-        canvas.drawText(text.toString(), 0, yPos, paint);
+        canvas.drawText(text.toString(), xPos, yPos, paint);
         Matrix matrix = new Matrix();
         matrix.postScale(scale, scale);
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
 
-    /**
-     * Transform the image drawable to bitmap
-     * @param drawable the content drawable
-     * @param width the new bitmap width
-     * @param height the new bitmap height
-     * @return bitmap of drawable
-     */
     private static Bitmap renderDrawable(Drawable drawable, int width, int height) {
         Bitmap bitmap = getBitmapFromDrawable(drawable);
         return Bitmap.createScaledBitmap(bitmap, width, height, true);
@@ -450,26 +327,16 @@ public class TextLedView extends View {
         v.draw(c);
         return b;
     }
-
-
-    /**
-     * Transform a bitmap to a led bitmap
-     * @param src the original bitmap
-     * @return led bitmap
-     */
     private Bitmap generateLedBitmap(Bitmap src) {
         Bitmap bitmap = Bitmap.createBitmap(src.getWidth(), src.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         for (Point point : circlePoint) {
-            // Detect if the px is in range of our led position
             int color = isInRange(src, point.x, point.y);
             if (color != 0) {
                 if (ledColor != 0 && !contentType.equals(CONTENT_TYPE_IMAGE)) {
                     color = ledColor;
                 }
                 paint.setColor(color);
-
-                // draw shape according to ledType
                 if (LED_TYPE_CIRCLE.equals(ledType)) {
                     canvas.drawCircle(point.x, point.y, ledRadius, paint);
                 } else if (LED_TYPE_SQUARE.equals(ledType)) {
@@ -491,11 +358,6 @@ public class TextLedView extends View {
     private void measureBitmap(Bitmap bitmap) {
         measurePoint(bitmap.getWidth(), bitmap.getHeight());
     }
-
-
-    /**
-     * Calculate the led point position
-     */
     private void measurePoint(int width, int height) {
         int halfBound = ledRadius + ledSpace / 2;
         int x = halfBound;
@@ -566,14 +428,6 @@ public class TextLedView extends View {
         }
         return 0;
     }
-
-    /**
-     * Measure if x and y is in range of leds
-     * @param bitmap the origin bitmap
-     * @param x led x
-     * @param y led y
-     * @return the color , if color is zero means empty
-     */
     private int isInRange(Bitmap bitmap, int x, int y) {
         if (bitmap == null)
             return 0;
@@ -609,12 +463,6 @@ public class TextLedView extends View {
 
         return 0;
     }
-
-    /**
-     * Get bitmap from drawable, Copy from CircleImageView
-     * @param drawable the drawable
-     * @return the bitmap of drawable
-     */
     private static Bitmap getBitmapFromDrawable(Drawable drawable) {
         if (drawable == null) {
             return null;
@@ -703,4 +551,12 @@ public class TextLedView extends View {
     public void setLedText(CharSequence ledText) {
         this.ledText = ledText;
     }
+    public int getFont() {
+        return font;
+    }
+
+    public void setFont(int font) {
+        this.font = font;
+    }
+
 }

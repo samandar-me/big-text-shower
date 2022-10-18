@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
+import android.widget.HorizontalScrollView;
 
 import com.sdk.bigtextshower.R;
 
@@ -27,7 +28,7 @@ public class MyLedView extends SurfaceView implements SurfaceHolder.Callback, Ru
     private Paint mPaint;
     private boolean loop = true;
     private float x = 0;
-    private float txtWidth;
+    public float txtWidth;
     private int screenWidth;
     private int screenHeight;
     private boolean isDrawBg = false;
@@ -38,7 +39,7 @@ public class MyLedView extends SurfaceView implements SurfaceHolder.Callback, Ru
     private String backgroundColor = "#FF000000";
     private int font = R.font.baloo;
     private String textColor = "#E91E63";
-    private int textSpeed = 200;
+    private int textSpeed = 300;
 
     public MyLedView(Context context) {
         super(context);
@@ -55,7 +56,7 @@ public class MyLedView extends SurfaceView implements SurfaceHolder.Callback, Ru
         init();
     }
 
-    public void init() {
+    private void init() {
         surfaceHolder = getHolder();
         surfaceHolder.addCallback(this);
         setZOrderOnTop(true);
@@ -128,7 +129,7 @@ public class MyLedView extends SurfaceView implements SurfaceHolder.Callback, Ru
         Bitmap txt = drawText();
         txtWidth = txt.getWidth();
 
-        canvas.drawBitmap(txt, x, 50, mPaint);
+        canvas.drawBitmap(txt, 0, 50, mPaint);
         canvas.saveLayer(0, 0, width, height, null, Canvas.ALL_SAVE_FLAG);
 
         mPaint.setARGB(255, 255, 255, 255);
@@ -150,11 +151,11 @@ public class MyLedView extends SurfaceView implements SurfaceHolder.Callback, Ru
 
         surfaceHolder.unlockCanvasAndPost(canvas);
 
-        if (x < -txtWidth) {
-            x = width;
-        } else {
-            x -= textSpeed;
-        }
+//        if (x < -txtWidth) {
+//            x = width;
+//        } else {
+//            x -= textSpeed;
+//        }
     }
 
     public void setText(String text) {
