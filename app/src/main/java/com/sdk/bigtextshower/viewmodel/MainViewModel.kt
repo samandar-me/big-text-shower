@@ -32,7 +32,7 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun setTextSize(textSize: Int) {
+    fun setTextSize(textSize: Float) {
         viewModelScope.launch {
             reduce {
                 it.copy(
@@ -77,16 +77,6 @@ class MainViewModel : ViewModel() {
             reduce {
                 it.copy(
                     font = font
-                )
-            }
-        }
-    }
-
-    fun setLedType(type: String) {
-        viewModelScope.launch {
-            reduce {
-                it.copy(
-                    ledType = type
                 )
             }
         }

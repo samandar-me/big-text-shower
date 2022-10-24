@@ -36,9 +36,9 @@ public class MyLedView extends SurfaceView implements SurfaceHolder.Callback, Ru
 
     private String txt = "Hello ❤️";
     private float textSize = 220f;
-    private String backgroundColor = "#FF000000";
+    private int backgroundColor;
     private int font = R.font.baloo;
-    private String textColor = "#E91E63";
+    private int textColor;
     private int textSpeed = 300;
 
     public MyLedView(Context context) {
@@ -61,7 +61,7 @@ public class MyLedView extends SurfaceView implements SurfaceHolder.Callback, Ru
         surfaceHolder.addCallback(this);
         setZOrderOnTop(true);
         surfaceHolder.setFormat(PixelFormat.TRANSPARENT);
-        setBackgroundColor(Color.parseColor(backgroundColor));
+        setBackgroundColor(backgroundColor);
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
         WindowManager manager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
@@ -76,7 +76,8 @@ public class MyLedView extends SurfaceView implements SurfaceHolder.Callback, Ru
         new Thread(this).start();
     }
 
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) { }
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+    }
 
     public void surfaceDestroyed(SurfaceHolder holder) {
         loop = false;
@@ -87,19 +88,18 @@ public class MyLedView extends SurfaceView implements SurfaceHolder.Callback, Ru
             synchronized (surfaceHolder) {
                 draw();
             }
-            try{
+            try {
                 Thread.sleep(10);
-            }catch(InterruptedException ex){
-                Log.e("TextSurfaceView",ex.getMessage()+"\n"+ex);
+            } catch (InterruptedException ex) {
+                Log.e("TextSurfaceView", ex.getMessage() + "\n" + ex);
             }
         }
     }
 
 
-
     private Bitmap drawText() {
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setColor(Color.parseColor(textColor));
+        paint.setColor(textColor);
         paint.setTextSize(textSize);
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setShadowLayer(8, 0, 0, Color.rgb(255, 255, 0));
@@ -113,7 +113,7 @@ public class MyLedView extends SurfaceView implements SurfaceHolder.Callback, Ru
         Bitmap bitmap = Bitmap.createBitmap((int) Math.floor(width), (int) Math.floor(height), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         int xPos = (canvas.getWidth() / 2);
-        int yPos = (int) ((canvas.getHeight() / 2) - ((paint.descent() + paint.ascent()) / 2)) ;
+        int yPos = (int) ((canvas.getHeight() / 2) - ((paint.descent() + paint.ascent()) / 2));
         canvas.drawText(txt, xPos, yPos, paint);
         Matrix matrix = new Matrix();
         matrix.postScale(scale, scale);
@@ -129,7 +129,7 @@ public class MyLedView extends SurfaceView implements SurfaceHolder.Callback, Ru
         Bitmap txt = drawText();
         txtWidth = txt.getWidth();
 
-        canvas.drawBitmap(txt, 0, 50, mPaint);
+        canvas.drawBitmap(txt, x, 50, mPaint);
         canvas.saveLayer(0, 0, width, height, null, Canvas.ALL_SAVE_FLAG);
 
         mPaint.setARGB(255, 255, 255, 255);
@@ -151,31 +151,33 @@ public class MyLedView extends SurfaceView implements SurfaceHolder.Callback, Ru
 
         surfaceHolder.unlockCanvasAndPost(canvas);
 
-//        if (x < -txtWidth) {
-//            x = width;
-//        } else {
-//            x -= textSpeed;
-//        }
+        if (x < -txtWidth) {
+            x = width;
+        } else {
+            x -= textSpeed;
+        }
     }
 
     public void setText(String text) {
-        this.txt = text;
+        this.txt = "    " + text + " ";
     }
 
     public void setFont(int font) {
         this.font = font;
     }
 
-    public void setTextColor(String color) {
+    public void setTextColor(int color) {
         this.textColor = color;
     }
 
     public void setTextSize(float textSize) {
         this.textSize = textSize;
     }
-    public void setBackgroundColor(String color) {
+
+    public void setBackgroundColor(int color) {
         this.backgroundColor = color;
     }
+
     public void setTextSpeed(int speed) {
         this.textSpeed = speed;
     }

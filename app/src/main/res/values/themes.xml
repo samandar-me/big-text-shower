@@ -13,4 +13,7 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Customize your theme here. -->
     </style>
+    <style name="circle">
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>

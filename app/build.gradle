@@ -62,4 +62,8 @@ dependencies {
 
     implementation 'androidx.activity:activity-ktx:1.5.0'
 
+    implementation 'com.github.mrudultora:Colorpicker:1.2.0'
+
+    implementation 'com.github.Jay-Goo:RangeSeekBar:3.0.0'
+
 }
