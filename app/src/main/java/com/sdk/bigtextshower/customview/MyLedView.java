@@ -31,7 +31,6 @@ public class MyLedView extends SurfaceView implements SurfaceHolder.Callback, Ru
     public float txtWidth;
     private int screenWidth;
     private int screenHeight;
-    private boolean isDrawBg = false;
     private Handler handler;
 
     private String txt = "Hello ❤️";
