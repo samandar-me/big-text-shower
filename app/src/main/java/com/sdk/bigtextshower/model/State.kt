@@ -1,4 +1,4 @@
-package com.sdk.bigtextshower.viewmodel
+package com.sdk.bigtextshower.model
 
 import android.graphics.Color
 import android.os.Parcelable

@@ -1,14 +1,12 @@
 package com.sdk.bigtextshower.activity
 
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.sdk.bigtextshower.R
 import com.sdk.bigtextshower.customview.MyLedView
-import com.sdk.bigtextshower.viewmodel.State
+import com.sdk.bigtextshower.model.State
 
 class TextShowActivity : AppCompatActivity() {
     private lateinit var ledView: MyLedView

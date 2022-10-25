@@ -18,9 +18,8 @@ import com.mrudultora.colorpicker.util.ColorItemShape
 import com.sdk.bigtextshower.R
 import com.sdk.bigtextshower.adapter.FontAdapter
 import com.sdk.bigtextshower.databinding.ActivityMainBinding
+import com.sdk.bigtextshower.model.State
 import com.sdk.bigtextshower.util.Constants
-import com.sdk.bigtextshower.viewmodel.MainViewModel
-import com.sdk.bigtextshower.viewmodel.State
 
 
 class MainActivity : AppCompatActivity() {
