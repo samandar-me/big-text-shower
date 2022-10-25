@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     private var backColor = -1
     private var textColor = -1
     private var fontList: MutableList<Int> = Constants.fontList()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
