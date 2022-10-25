@@ -36,7 +36,6 @@ public class MyLedView extends SurfaceView implements SurfaceHolder.Callback, Ru
 
     private String txt = "Hello ❤️";
     private float textSize = 220f;
-    private int backgroundColor;
     private int font = R.font.baloo;
     private int textColor;
     private int textSpeed = 300;
@@ -61,7 +60,6 @@ public class MyLedView extends SurfaceView implements SurfaceHolder.Callback, Ru
         surfaceHolder.addCallback(this);
         setZOrderOnTop(true);
         surfaceHolder.setFormat(PixelFormat.TRANSPARENT);
-        setBackgroundColor(backgroundColor);
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
         WindowManager manager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
@@ -174,9 +172,6 @@ public class MyLedView extends SurfaceView implements SurfaceHolder.Callback, Ru
         this.textSize = textSize;
     }
 
-    public void setBackgroundColor(int color) {
-        this.backgroundColor = color;
-    }
 
     public void setTextSpeed(int speed) {
         this.textSpeed = speed;

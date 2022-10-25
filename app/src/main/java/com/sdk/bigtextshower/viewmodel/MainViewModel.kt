@@ -15,7 +15,7 @@ class MainViewModel : ViewModel() {
     val state: StateFlow<State> get() = _state
 
     @OptIn(DelicateCoroutinesApi::class)
-    private val singleThread = newSingleThreadContext("ViewModel Single Thread")
+    private val singleThread = newSingleThreadContext("Single")
 
     private suspend fun reduce(state: (State) -> State) = withContext(singleThread) {
         val lastState = _state.value

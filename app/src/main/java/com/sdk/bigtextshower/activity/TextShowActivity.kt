@@ -3,7 +3,9 @@ package com.sdk.bigtextshower.activity
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.*
+import android.widget.Toast
 import com.sdk.bigtextshower.R
 import com.sdk.bigtextshower.customview.MyLedView
 import com.sdk.bigtextshower.viewmodel.State
@@ -39,7 +41,8 @@ class TextShowActivity : AppCompatActivity() {
                 setTextSize(it.textSize)
                 setTextColor(it.textColor)
                 setBackgroundColor(it.backgroundColor)
-                setFont(R.font.baloo)
+                setFont(it.font)
+                invalidate()
             }
         }
     }

@@ -7,6 +7,22 @@
     android:background="@color/blue_dark"
     tools:context=".activity.MainActivity">
 
+    <com.jaygoo.widget.RangeSeekBar
+        android:id="@+id/seekBar2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:rsb_gravity="center"
+        app:rsb_indicator_background_color="@color/gray_dark"
+        app:rsb_max="350"
+        app:rsb_mode="single"
+        app:rsb_progress_color="@color/green" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv"
         android:layout_width="match_parent"
@@ -25,17 +41,16 @@
         android:layout_margin="10dp"
         android:background="@drawable/edit_bg"
         android:maxLines="1"
-        android:textCursorDrawable="@drawable/cursor_color"
         android:padding="15dp"
-        app:layout_constraintTop_toTopOf="parent"
         android:text="Hello ❤️"
         android:textColor="#e2e2e2"
-        android:cursorVisible="false"
+        android:textCursorDrawable="@drawable/cursor_color"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/rv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -43,7 +58,7 @@
         android:layout_height="100dp"
         android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/seekBar"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rv">
@@ -126,13 +141,13 @@
         android:layout_marginHorizontal="20dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:rsb_mode="single"
         app:layout_constraintHorizontal_bias="0.5"
-        app:rsb_max="350"
-        app:rsb_gravity="center"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:rsb_gravity="center"
         app:rsb_indicator_background_color="@color/gray_dark"
+        app:rsb_max="350"
+        app:rsb_mode="single"
         app:rsb_progress_color="@color/green" />
 
     <com.google.android.material.button.MaterialButton
@@ -169,5 +184,43 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="675dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="399dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/baloo"
+        android:text="Text Size"
+        android:textColor="@color/white"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toTopOf="@+id/seekBar2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.51" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Text Speed"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/white"
+        android:textSize="17sp"
+        android:fontFamily="@font/baloo"
+        app:layout_constraintBottom_toTopOf="@+id/seekBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
